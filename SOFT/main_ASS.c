@@ -180,6 +180,15 @@ for(ii=0;ii<i;ii++)
 
 }
 
+//-----------------------------------------------
+void t4_init(void){
+	TIM4->PSCR = 4;
+	TIM4->ARR= 77;
+	TIM4->IER|= TIM4_IER_UIE;					// enable break interrupt
+	
+	TIM4->CR1=(TIM4_CR1_URS | TIM4_CR1_CEN | TIM4_CR1_ARPE);	
+	
+}
 
 
 //-----------------------------------------------
@@ -461,12 +470,13 @@ else
 
 
 //-----------------------------------------------
-void t4_init(void){
-	TIM4->PSCR = 4;
-	TIM4->ARR= 77;
-	TIM4->IER|= TIM4_IER_UIE;					// enable break interrupt
+void exti_init(void){
+EXTI_CR1=0x00;	
+GPIOD->DDR&=~(1<<4);
+GPIOD->CR1&=~(1<<4);
+GPIOD->CR2|=(1<<4);	
+
 	
-	TIM4->CR1=(TIM4_CR1_URS | TIM4_CR1_CEN | TIM4_CR1_ARPE);	
 	
 }
 
@@ -477,10 +487,13 @@ TIM1->ARRH= 0xa9;
 TIM1->ARRL= 0xf6;
 TIM1->CCR1H= 0x00;	
 TIM1->CCR1L= 0xff;
-TIM1->CCR2H= 0x54;	
+TIM1->CCR2H= 0x04;	
 TIM1->CCR2L= 0xfb;
 TIM1->CCR3H= 0x00;	
 TIM1->CCR3L= 0x64;
+
+TIM1->PSCRH= 0x00;	
+TIM1->PSCRL= 0x01;
 
 TIM1->CCMR1= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
 TIM1->CCMR2= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
@@ -491,6 +504,30 @@ TIM1->CR1=(TIM1_CR1_CEN | TIM1_CR1_ARPE);
 TIM1->BKR|= TIM1_BKR_AOE;
 }
 
+
+//-----------------------------------------------
+void t2_init(void)
+{
+//TIM1->ARRH= 0xa9;
+//TIM1->ARRL= 0xf6;
+//TIM1->CCR1H= 0x00;	
+//TIM1->CCR1L= 0xff;
+//TIM1->CCR2H= 0x04;	
+//TIM1->CCR2L= 0xfb;
+//TIM1->CCR3H= 0x00;	
+//TIM1->CCR3L= 0x64;
+
+//TIM2->PSCRH= 0x00;	
+TIM2->PSCR= 0x01;
+
+//TIM1->CCMR1= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
+//TIM1->CCMR2= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
+//TIM1->CCMR3= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
+//TIM1->CCER1= TIM1_CCER1_CC1E | TIM1_CCER1_CC2E ; //OC1, OC2 output pins enabled
+//TIM1->CCER2= TIM1_CCER2_CC3E; //OC1, OC2 output pins enabled
+TIM2->CR1=(TIM2_CR1_CEN | TIM2_CR1_ARPE);
+//TIM1->BKR|= TIM1_BKR_AOE;
+}
 
 //-----------------------------------------------
 void adc2_init(void)
@@ -627,6 +664,12 @@ if((adc_cnt&0x03)==0)
 //adc_buff_[adc_ch]=temp_adc;
 }
 
+//***********************************************
+@far @interrupt void PortD_Ext_Interrupt (void) {
+
+GPIOC->ODR^=(1<<2);
+
+}
 
 //===============================================
 //===============================================
@@ -651,7 +694,7 @@ enableInterrupts();
 //adr_drv_v4(1);
 
 
-//t4_init();
+t4_init();
 
 		GPIOG->DDR|=(1<<0);
 		GPIOG->CR1|=(1<<0);
@@ -679,8 +722,8 @@ GPIOB->DDR|=(1<<2);
 GPIOB->CR1|=(1<<2);
 GPIOB->CR2|=(1<<2);
 */
-t1_init();
-
+//t1_init();
+t2_init();
 GPIOA->DDR|=(1<<5);
 GPIOA->CR1|=(1<<5);
 GPIOA->CR2&=~(1<<5);
@@ -697,6 +740,8 @@ GPIOC->DDR|=(1<<3);
 GPIOC->CR1|=(1<<3);
 GPIOC->CR2|=(1<<3);
 
+//GPIOC->ODR|=(1<<1);//exti_init();
+exti_init();
 
 while (1)
 	{
@@ -707,7 +752,7 @@ if(b100Hz)
 		{
 		b100Hz=0;
 
-		//adc2_init();
+		
       	}  
       	
 	if(b10Hz)
@@ -717,6 +762,7 @@ if(b100Hz)
         //matemat();
 	    //led_drv(); 
 		//pwr_hndl();		//вычисление воздействий на силу
+		
       	}
 
 	if(b5Hz)

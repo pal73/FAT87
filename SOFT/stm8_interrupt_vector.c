@@ -22,6 +22,7 @@ extern @far @interrupt void TIM4_UPD_Interrupt (void);
 extern @far @interrupt void CAN_RX_Interrupt (void);
 extern @far @interrupt void CAN_TX_Interrupt (void);
 extern @far @interrupt void ADC2_EOC_Interrupt (void);
+extern @far @interrupt void PortD_Ext_Interrupt (void);
 
 struct interrupt_vector const _vectab[] = {
 	{0x82, (interrupt_handler_t)_stext}, /* reset */
@@ -32,7 +33,7 @@ struct interrupt_vector const _vectab[] = {
 	{0x82, NonHandledInterrupt}, /* irq3  */
 	{0x82, NonHandledInterrupt}, /* irq4  */
 	{0x82, NonHandledInterrupt}, /* irq5  */
-	{0x82, NonHandledInterrupt}, /* irq6  */
+	{0x82, PortD_Ext_Interrupt}, /* irq6  */
 	{0x82, NonHandledInterrupt}, /* irq7  */
 	{0x82, NonHandledInterrupt}, /* irq8  */
 	{0x82, NonHandledInterrupt}, /* irq9  */

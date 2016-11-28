@@ -16,7 +16,7 @@ Toolset=STM8 Cosmic
 ConfigName=Debug
 Target=fat87_ass.elf
 OutputFolder=Debug
-Debug=$(TargetFName)
+Debug=debug\fat87_ass.s19
 
 [Config.1]
 ConfigName=Release
@@ -70,9 +70,10 @@ String.107.0=fat87_ass.elf
 Int.108=0
 
 [Root.Config.0.Settings.1]
-String.6.0=2016,11,27,23,46,15
-String.100.0=$(TargetFName)
+String.6.0=2016,11,28,14,32,39
+String.100.0=debug\fat87_ass.s19
 String.101.0=
+String.102.0=
 String.103.0=.\;
 
 [Root.Config.0.Settings.2]

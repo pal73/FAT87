@@ -34,8 +34,8 @@
   88  001d 00            	dc.b	page(f_NonHandledInterrupt)
   89  001e 0000          	dc.w	f_NonHandledInterrupt
   90  0020 82            	dc.b	130
-  92  0021 00            	dc.b	page(f_NonHandledInterrupt)
-  93  0022 0000          	dc.w	f_NonHandledInterrupt
+  92  0021 00            	dc.b	page(f_PortD_Ext_Interrupt)
+  93  0022 0000          	dc.w	f_PortD_Ext_Interrupt
   94  0024 82            	dc.b	130
   96  0025 00            	dc.b	page(f_NonHandledInterrupt)
   97  0026 0000          	dc.w	f_NonHandledInterrupt
@@ -106,8 +106,9 @@
  184  007d 00            	dc.b	page(f_NonHandledInterrupt)
  185  007e 0000          	dc.w	f_NonHandledInterrupt
  236                     	xdef	__vectab
- 237                     	xref	f_ADC2_EOC_Interrupt
- 238                     	xref	f_TIM4_UPD_Interrupt
- 239                     	xref	__stext
- 240                     	xdef	f_NonHandledInterrupt
- 259                     	end
+ 237                     	xref	f_PortD_Ext_Interrupt
+ 238                     	xref	f_ADC2_EOC_Interrupt
+ 239                     	xref	f_TIM4_UPD_Interrupt
+ 240                     	xref	__stext
+ 241                     	xdef	f_NonHandledInterrupt
+ 260                     	end
