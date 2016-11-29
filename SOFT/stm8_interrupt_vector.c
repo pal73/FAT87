@@ -23,6 +23,9 @@ extern @far @interrupt void CAN_RX_Interrupt (void);
 extern @far @interrupt void CAN_TX_Interrupt (void);
 extern @far @interrupt void ADC2_EOC_Interrupt (void);
 extern @far @interrupt void PortD_Ext_Interrupt (void);
+extern @far @interrupt void UART1TxInterrupt (void);
+extern @far @interrupt void UART1RxInterrupt (void);
+extern @far @interrupt void TIM2_CC_Interrupt (void);
 
 struct interrupt_vector const _vectab[] = {
 	{0x82, (interrupt_handler_t)_stext}, /* reset */
@@ -41,11 +44,11 @@ struct interrupt_vector const _vectab[] = {
 	{0x82, NonHandledInterrupt}, /* irq11 */
 	{0x82, NonHandledInterrupt}, /* irq12 */
 	{0x82, NonHandledInterrupt}, /* irq13 */
-	{0x82, NonHandledInterrupt}, /* irq14 */
+	{0x82, TIM2_CC_Interrupt}, /* irq14 */
 	{0x82, NonHandledInterrupt}, /* irq15 */
 	{0x82, NonHandledInterrupt}, /* irq16 */
-	{0x82, NonHandledInterrupt}, /* irq17 */
-	{0x82, NonHandledInterrupt}, /* irq18 */
+	{0x82, UART1TxInterrupt}, 	 /* irq17 */
+	{0x82, UART1RxInterrupt}, 		/* irq18 */
 	{0x82, NonHandledInterrupt}, /* irq19 */
 	{0x82, NonHandledInterrupt}, /* irq20 */
 	{0x82, NonHandledInterrupt}, /* irq21 */

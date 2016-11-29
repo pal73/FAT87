@@ -6,6 +6,7 @@ char bVENT_BLOCK=0;
 
 #include "string.h"
 #include <iostm8.h>
+#include <stdio.h>
 //#include <iostm8s103.h>
 #include "stm8s.h"
 //#include "main.h"
@@ -13,7 +14,16 @@ short t0_cnt0=0;
 char t0_cnt1=0,t0_cnt2=0,t0_cnt3=0,t0_cnt4=0;
 _Bool b100Hz, b10Hz, b5Hz, b2Hz, b1Hz;
 
+#define TX_BUFFER_SIZE1 50
+#define RX_BUFFER_SIZE1 300
 
+char tx_buffer1[TX_BUFFER_SIZE1]={0};
+signed char tx_counter1;
+signed char tx_wr_index1,tx_rd_index1;
+
+char tx_stat_cnt;
+char tx_wd_cnt=100;
+char  bOUT_FREE;
 
 char adc_ch,adc_cnt;
 signed short adc_plazma_short,adc_plazma[5];
@@ -38,6 +48,8 @@ signed short i_main_sigma;
 
 char buffer_for_timer1_H;
 char buffer_for_timer1_L;
+
+u16 inPulseCount;
 
 //-----------------------------------------------
 void gran(signed short *adr, signed short min, signed short max)
@@ -66,6 +78,28 @@ for(ii=0;ii<i;ii++)
 	}
 
 }
+
+//-----------------------------------------------
+void uart1_init (void)
+{
+//Порт A4 - RX
+GPIOA->DDR&=~(1<<4);
+GPIOA->CR1|=(1<<4);
+GPIOA->CR2&=~(1<<4);
+
+//Порт A5 - TX
+GPIOA->DDR|=(1<<5);
+GPIOA->CR1|=(1<<5);
+GPIOA->CR2&=~(1<<5);	
+
+
+UART1->CR1&=~UART1_CR1_M;					
+UART1->CR3|= (0<<4) & UART1_CR3_STOP;  	
+UART1->BRR2= 0x09;
+UART1->BRR1= 0x20;
+UART1->CR2|= UART1_CR2_TEN | UART1_CR2_REN | UART1_CR2_RIEN/*| UART2_CR2_TIEN*/ ;	
+}
+
 
 //-----------------------------------------------
 void t4_init(void){
@@ -133,7 +167,21 @@ void matemat(void)
 
 }
 
+//-----------------------------------------------
+char putchar(char c)
+{
+while (tx_counter1 == TX_BUFFER_SIZE1);
+///#asm("cli")
+if (tx_counter1 || ((UART1->SR & UART1_SR_TXE)==0))
+   {
+   tx_buffer1[tx_wr_index1]=c;
+   if (++tx_wr_index1 == TX_BUFFER_SIZE1) tx_wr_index1=0;
+   ++tx_counter1;
+   }
+else UART1->DR=c;
 
+UART1->CR2|= UART1_CR2_TIEN | UART1_CR2_TCIEN;
+}
 
 
 /* -------------------------------------------------------------------------- */
@@ -225,11 +273,11 @@ void t2_init_(void){
 	TIM2->CCR1H= 10;	
 	TIM2->CCR1L= 0;
 	
-	//TIM2->CCMR1= ((6<<4) & TIM2_CCMR_OCM) | TIM2_CCMR_OCxPE; //OC2 toggle mode, prelouded
+	TIM2->CCER1= TIM2_CCER1_CC1E; //OC1, OC2 output pins enabled
+	TIM2->CCMR1= ((6<<4) & TIM2_CCMR_OCM) | TIM2_CCMR_OCxPE; //OC2 toggle mode, prelouded
 	///TIM2->CCMR2= ((7<<4) & TIM2_CCMR_OCM) | TIM2_CCMR_OCxPE; //OC2 toggle mode, prelouded
 	///TIM2->CCMR3= ((7<<4) & TIM2_CCMR_OCM) | TIM2_CCMR_OCxPE; //OC2 toggle mode, prelouded
 	/*TIM2->CCER2= TIM2_CCER2_CC3E | TIM2_CCER2_CC3P; //OC1, OC2 output pins enabled*/
-	//TIM2->CCER1= TIM2_CCER1_CC1E; //OC1, OC2 output pins enabled
 	///TIM2->CCER2= TIM2_CCER2_CC3E | TIM2_CCER2_CC3P; //OC1, OC2 output pins enabled
 	
 	TIM2->CR1=(TIM2_CR1_CEN /*| TIM2_CR1_ARPE*/);	
@@ -257,25 +305,11 @@ void t3_init_(void){
 //-----------------------------------------------
 void t2_init(void)
 {
-//TIM1->ARRH= 0xa9;
-//TIM1->ARRL= 0xf6;
-//TIM1->CCR1H= 0x00;	
-//TIM1->CCR1L= 0xff;
-//TIM1->CCR2H= 0x04;	
-//TIM1->CCR2L= 0xfb;
-//TIM1->CCR3H= 0x00;	
-//TIM1->CCR3L= 0x64;
-
-//TIM2->PSCRH= 0x00;	
-TIM2->PSCR= 0x01;
-
-//TIM1->CCMR1= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
-//TIM1->CCMR2= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
-//TIM1->CCMR3= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
-//TIM1->CCER1= TIM1_CCER1_CC1E | TIM1_CCER1_CC2E ; //OC1, OC2 output pins enabled
-//TIM1->CCER2= TIM1_CCER2_CC3E; //OC1, OC2 output pins enabled
-TIM2->CR1=(TIM2_CR1_CEN | TIM2_CR1_ARPE);
-//TIM1->BKR|= TIM1_BKR_AOE;
+TIM2->PSCR = 0x04;
+TIM2->CCMR1 = TIM2_CCER1_CC1E;
+TIM2->CCER1 = TIM2_CCER1_CC1E;
+TIM2->IER = TIM2_IER_CC1IE;
+TIM2->CR1 = TIM2_CR1_CEN;
 }
 
 //-----------------------------------------------
@@ -419,6 +453,57 @@ TIM2->CNTRL=0;
 
 }
 
+//***********************************************
+@far @interrupt void UART1TxInterrupt (void) 
+{
+@near char tx_status;
+
+tx_status=UART1->SR;
+
+if (tx_status & (UART1_SR_TXE))
+{
+	if (tx_counter1)
+		{
+		--tx_counter1;
+		UART1->DR=tx_buffer1[tx_rd_index1];
+		if (++tx_rd_index1 == TX_BUFFER_SIZE1) tx_rd_index1=0;
+		}
+	else 
+		{
+		tx_stat_cnt=3;
+			bOUT_FREE=1;
+			UART1->CR2&= ~UART1_CR2_TIEN;
+			
+		}
+}
+if (tx_status & (UART1_SR_TC))
+	{		
+	UART1->SR&=~UART1_SR_TC;
+	}
+}
+
+//***********************************************
+@far @interrupt void UART1RxInterrupt (void) 
+{
+@near char temp,rx_status,rx_data;
+
+rx_status=UART1->SR;
+rx_data=UART1->DR;
+
+}
+
+//***********************************************
+@far @interrupt void TIM2_CC_Interrupt (void)
+{
+u8 h,l;
+// Get the count
+h = TIM2->CCR1H;
+l = TIM2->CCR1L;
+inPulseCount = ((u16)h << 8) | l;
+TIM2->SR1 = TIM2_SR1_RESET_VALUE;
+TIM2->SR2 = TIM2_SR2_RESET_VALUE;
+}
+
 //===============================================
 //===============================================
 //===============================================
@@ -474,7 +559,9 @@ GPIOB->CR1|=(1<<2);
 GPIOB->CR2|=(1<<2);
 */
 t1_init();
-t2_init_();
+t2_init();
+
+uart1_init();
 
 GPIOA->DDR|=(1<<5);
 GPIOA->CR1|=(1<<5);
@@ -520,9 +607,9 @@ if(b100Hz)
         //matemat();
 	    //led_drv(); 
 		//pwr_hndl();		//вычисление воздействий на силу
-		TIM1->ARRH=0x68;//buffer_for_timer1_H;
-		TIM1->ARRL=0x2a;//buffer_for_timer1_L;
-		TIM1->CCR2H=0x34;//buffer_for_timer1_H>>1;	
+		TIM1->ARRH=(u8)(inPulseCount>>8);//buffer_for_timer1_H;
+		TIM1->ARRL=(u8)inPulseCount;//buffer_for_timer1_L;
+		TIM1->CCR2H=(u8)(inPulseCount>>9);//buffer_for_timer1_H>>1;	
 		TIM1->CCR2L=0;
       	}
 
@@ -545,6 +632,9 @@ if(b100Hz)
 		b1Hz=0;
 
 		if(main_cnt<1000)main_cnt++;
+		
+		//putchar('a');
+		printf("%i",inPulseCount);
 		}
 
 	}

@@ -58,8 +58,8 @@
  121  003d 00            	dc.b	page(f_NonHandledInterrupt)
  122  003e 0000          	dc.w	f_NonHandledInterrupt
  123  0040 82            	dc.b	130
- 125  0041 00            	dc.b	page(f_NonHandledInterrupt)
- 126  0042 0000          	dc.w	f_NonHandledInterrupt
+ 125  0041 00            	dc.b	page(f_TIM2_CC_Interrupt)
+ 126  0042 0000          	dc.w	f_TIM2_CC_Interrupt
  127  0044 82            	dc.b	130
  129  0045 00            	dc.b	page(f_NonHandledInterrupt)
  130  0046 0000          	dc.w	f_NonHandledInterrupt
@@ -67,11 +67,11 @@
  133  0049 00            	dc.b	page(f_NonHandledInterrupt)
  134  004a 0000          	dc.w	f_NonHandledInterrupt
  135  004c 82            	dc.b	130
- 137  004d 00            	dc.b	page(f_NonHandledInterrupt)
- 138  004e 0000          	dc.w	f_NonHandledInterrupt
+ 137  004d 00            	dc.b	page(f_UART1TxInterrupt)
+ 138  004e 0000          	dc.w	f_UART1TxInterrupt
  139  0050 82            	dc.b	130
- 141  0051 00            	dc.b	page(f_NonHandledInterrupt)
- 142  0052 0000          	dc.w	f_NonHandledInterrupt
+ 141  0051 00            	dc.b	page(f_UART1RxInterrupt)
+ 142  0052 0000          	dc.w	f_UART1RxInterrupt
  143  0054 82            	dc.b	130
  145  0055 00            	dc.b	page(f_NonHandledInterrupt)
  146  0056 0000          	dc.w	f_NonHandledInterrupt
@@ -106,9 +106,12 @@
  185  007d 00            	dc.b	page(f_NonHandledInterrupt)
  186  007e 0000          	dc.w	f_NonHandledInterrupt
  237                     	xdef	__vectab
- 238                     	xref	f_PortD_Ext_Interrupt
- 239                     	xref	f_ADC2_EOC_Interrupt
- 240                     	xref	f_TIM4_UPD_Interrupt
- 241                     	xref	__stext
- 242                     	xdef	f_NonHandledInterrupt
- 261                     	end
+ 238                     	xref	f_TIM2_CC_Interrupt
+ 239                     	xref	f_UART1RxInterrupt
+ 240                     	xref	f_UART1TxInterrupt
+ 241                     	xref	f_PortD_Ext_Interrupt
+ 242                     	xref	f_ADC2_EOC_Interrupt
+ 243                     	xref	f_TIM4_UPD_Interrupt
+ 244                     	xref	__stext
+ 245                     	xdef	f_NonHandledInterrupt
+ 264                     	end

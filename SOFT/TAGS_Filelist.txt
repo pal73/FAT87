@@ -2,6 +2,7 @@ main_ass.c
 stm8_interrupt_vector.c
 c:\program files\cosmic\cxstm8_32k\hstm8\iostm8.h
 c:\program files\cosmic\cxstm8_32k\hstm8\mods0.h
+c:\program files\cosmic\cxstm8_32k\hstm8\stdio.h
 c:\program files\cosmic\cxstm8_32k\hstm8\string.h
 stm8s.h
 stm8s_type.h
