@@ -50,6 +50,14 @@ char buffer_for_timer1_H;
 char buffer_for_timer1_L;
 
 u16 inPulseCount;
+u16 inAdcResult;
+u16 outPulseCount;
+
+u8 H,L,h,l;
+
+u16 adc_buff[16],adc_buff_;
+
+u32	freqMultipler = 100;
 
 //-----------------------------------------------
 void gran(signed short *adr, signed short min, signed short max)
@@ -252,7 +260,7 @@ TIM1->CCR3H= 0x00;
 TIM1->CCR3L= 0x64;
 
 TIM1->PSCRH= 0;	
-TIM1->PSCRL= 15;
+TIM1->PSCRL= 63;
 
 TIM1->CCMR1= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
 TIM1->CCMR2= ((6<<4) & TIM1_CCMR_OCM) | TIM1_CCMR_OCxPE; //OC2 toggle mode, prelouded
@@ -305,7 +313,7 @@ void t3_init_(void){
 //-----------------------------------------------
 void t2_init(void)
 {
-TIM2->PSCR = 0x04;
+TIM2->PSCR = 0x06;
 TIM2->CCMR1 = TIM2_CCER1_CC1E;
 TIM2->CCER1 = TIM2_CCER1_CC1E;
 TIM2->IER = TIM2_IER_CC1IE;
@@ -318,33 +326,10 @@ void adc2_init(void)
 adc_plazma[0]++;
 
 
-GPIOB->DDR&=~(1<<0);
-GPIOB->CR1&=~(1<<0);
-GPIOB->CR2&=~(1<<0);
+GPIOB->DDR&=~(1<<2);
+GPIOB->CR1&=~(1<<2);
+GPIOB->CR2&=~(1<<2);
 
-GPIOB->DDR&=~(1<<1);
-GPIOB->CR1&=~(1<<1);
-GPIOB->CR2&=~(1<<1);
-
-GPIOE->DDR&=~(1<<6);
-GPIOE->CR1&=~(1<<6);
-GPIOE->CR2&=~(1<<6);
-
-GPIOB->DDR&=~(1<<4);
-GPIOB->CR1&=~(1<<4);
-GPIOB->CR2&=~(1<<4);
-
-GPIOB->DDR&=~(1<<5);
-GPIOB->CR1&=~(1<<5);
-GPIOB->CR2&=~(1<<5);
-
-GPIOB->DDR&=~(1<<6);
-GPIOB->CR1&=~(1<<6);
-GPIOB->CR2&=~(1<<6);
-
-GPIOB->DDR&=~(1<<7);
-GPIOB->CR1&=~(1<<7);
-GPIOB->CR2&=~(1<<7);
 
 ADC2->TDRL=0xff;
 	
@@ -352,7 +337,7 @@ ADC2->CR2=0x08;
 ADC2->CR1=0x40;
 
 {
-	ADC2->CSR=0x20;
+	ADC2->CSR=0x22;
 	
 	ADC2->CR1|=1;
 	ADC2->CR1|=1;
@@ -417,7 +402,9 @@ ADC2->CSR&=~(1<<7);
 temp_adc=(((signed long)(ADC2->DRH))*256)+((signed long)(ADC2->DRL));
 
 
-adc_ch=0;
+
+adc_buff[adc_cnt]=temp_adc;
+
 adc_cnt++;
 if(adc_cnt>=16)
 	{
@@ -431,11 +418,12 @@ if((adc_cnt&0x03)==0)
 	tempSS=0;
 	for(i=0;i<16;i++)
 		{
-		
+		tempSS+=(signed long)adc_buff[i];
 		}
+	adc_buff_=(u16)(tempSS/16);
 	}
 	
-//adc_buff_[adc_ch]=temp_adc;
+inAdcResult=(u16)adc_buff_;
 }
 
 //***********************************************
@@ -594,23 +582,38 @@ while (1)
 if(b100Hz)
 		{
 		b100Hz=0;
-		
+		adc2_init();
 		
 		
       	}  
       	
 	if(b10Hz)
 		{
+		u32 temp_u32;	
 		b10Hz=0;
 		
 		//buffer_for_timer1_H=118;
         //matemat();
 	    //led_drv(); 
 		//pwr_hndl();		//вычисление воздействий на силу
-		TIM1->ARRH=(u8)(inPulseCount>>8);//buffer_for_timer1_H;
-		TIM1->ARRL=(u8)inPulseCount;//buffer_for_timer1_L;
-		TIM1->CCR2H=(u8)(inPulseCount>>9);//buffer_for_timer1_H>>1;	
-		TIM1->CCR2L=0;
+		freqMultipler=(u32)30+(((u32)inAdcResult)/((u32)4));
+		
+		temp_u32=(u32)inPulseCount;
+		temp_u32*=freqMultipler;
+		temp_u32/=(u32)100;
+		
+		outPulseCount=(u16)temp_u32;
+		
+		H=(u8)(outPulseCount>>8);
+		L=(u8)outPulseCount;
+		h=(u8)(outPulseCount>>9);
+		l=(u8)(outPulseCount>>1);
+		TIM1->ARRH=H;
+		TIM1->ARRL=L;
+		TIM1->CCR2H=h;	
+		TIM1->CCR2L=l;
+		
+
       	}
 
 	if(b5Hz)
@@ -634,7 +637,11 @@ if(b100Hz)
 		if(main_cnt<1000)main_cnt++;
 		
 		//putchar('a');
-		printf("%i",inPulseCount);
+		//printf("   %d   \n",inPulseCount);
+		printf(" adc   %d   ",inAdcResult);
+		printf(" mult  %d   \n",(u16)freqMultipler);
+		printf(" inpF  %d   \n",inPulseCount);
+		printf(" outF  %d   \n",outPulseCount);
 		}
 
 	}

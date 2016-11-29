@@ -48,16 +48,16 @@ ADC2_CSR_CH	stm8s.h	263;"	macro
 ADC2_CSR_EOC	stm8s.h	261;"	macro
 ADC2_CSR_EOCIE	stm8s.h	262;"	macro
 ADC2_CSR_RESET_VALUE	stm8s.h	247;"	macro
-ADC2_EOC_Interrupt	main_ass.c	422;"	function	signature:(void)
+ADC2_EOC_Interrupt	main_ass.c	394;"	function	signature:(void)
 ADC2_EOC_Interrupt	stm8_interrupt_vector.c	24;"	prototype	file:	signature:(void)
 ADC2_TDRH_RESET_VALUE	stm8s.h	251;"	macro
 ADC2_TDRL_RESET_VALUE	stm8s.h	250;"	macro
 ADC2_TypeDef	stm8s.h	241;"	typedef	typeref:struct:ADC2_struct
 ADC2_struct	stm8s.h	230;"	struct
-ADR_CONST_0	main_ass.c	188;"	macro	file:
-ADR_CONST_1	main_ass.c	189;"	macro	file:
-ADR_CONST_2	main_ass.c	190;"	macro	file:
-ADR_CONST_3	main_ass.c	191;"	macro	file:
+ADR_CONST_0	main_ass.c	197;"	macro	file:
+ADR_CONST_1	main_ass.c	198;"	macro	file:
+ADR_CONST_2	main_ass.c	199;"	macro	file:
+ADR_CONST_3	main_ass.c	200;"	macro	file:
 APR	stm8s.h	285;"	member	struct:AWU_struct
 AREA	stm8s.h	2553;"	macro
 ARR	stm8s.h	1129;"	member	struct:TIM6_struct
@@ -70,7 +70,7 @@ ARRL	stm8s.h	486;"	member	struct:TIM1_struct
 ARRL	stm8s.h	698;"	member	struct:TIM2_struct
 ARRL	stm8s.h	820;"	member	struct:TIM3_struct
 ARRL	stm8s.h	994;"	member	struct:TIM5_struct
-AUTORELOAD2	main_ass.c	265;"	macro	file:
+AUTORELOAD2	main_ass.c	274;"	macro	file:
 AWCRH	stm8s.h	172;"	member	struct:ADC1_struct
 AWCRL	stm8s.h	173;"	member	struct:ADC1_struct
 AWSRH	stm8s.h	170;"	member	struct:ADC1_struct
@@ -632,6 +632,7 @@ GPIO_TypeDef	stm8s.h	115;"	typedef	typeref:struct:GPIO_struct
 GPIO_struct	stm8s.h	107;"	struct
 GTR	stm8s.h	1652;"	member	struct:UART1_struct
 GTR	stm8s.h	1751;"	member	struct:UART2_struct
+H	main_ass.c	55;"	variable
 HSITRIMR	stm8s.h	371;"	member	struct:CLK_struct
 HTRH	stm8s.h	166;"	member	struct:ADC1_struct
 HTRL	stm8s.h	167;"	member	struct:ADC1_struct
@@ -726,6 +727,7 @@ IWDG_RLR_RESET_VALUE	stm8s.h	1485;"	macro
 IWDG_TypeDef	stm8s.h	1478;"	typedef	typeref:struct:IWDG_struct
 IWDG_struct	stm8s.h	1472;"	struct
 KR	stm8s.h	1474;"	member	struct:IWDG_struct
+L	main_ass.c	55;"	variable
 LTRH	stm8s.h	168;"	member	struct:ADC1_struct
 LTRL	stm8s.h	169;"	member	struct:ADC1_struct
 MCR	stm8s.h	1942;"	member	struct:__anon1
@@ -811,7 +813,7 @@ Page	stm8s.h	2101;"	member	struct:__anon1	typeref:union:__anon1::__anon2
 PointerAttr	stm8s.h	78;"	macro
 PointerAttr	stm8s.h	80;"	macro
 PointerAttr_Far	stm8s.h	63;"	macro
-PortD_Ext_Interrupt	main_ass.c	454;"	function	signature:(void)
+PortD_Ext_Interrupt	main_ass.c	429;"	function	signature:(void)
 PortD_Ext_Interrupt	stm8_interrupt_vector.c	25;"	prototype	file:	signature:(void)
 RCR	stm8s.h	487;"	member	struct:TIM1_struct
 RECR	stm8s.h	2068;"	member	struct:__anon1::__anon2::__anon8
@@ -1093,6 +1095,8 @@ TIM2_CCR3H_CCR3	stm8s.h	795;"	macro
 TIM2_CCR3H_RESET_VALUE	stm8s.h	731;"	macro
 TIM2_CCR3L_CCR3	stm8s.h	796;"	macro
 TIM2_CCR3L_RESET_VALUE	stm8s.h	732;"	macro
+TIM2_CC_Interrupt	main_ass.c	483;"	function	signature:(void)
+TIM2_CC_Interrupt	stm8_interrupt_vector.c	28;"	prototype	file:	signature:(void)
 TIM2_CNTRH_CNT	stm8s.h	781;"	macro
 TIM2_CNTRH_RESET_VALUE	stm8s.h	722;"	macro
 TIM2_CNTRL_CNT	stm8s.h	782;"	macro
@@ -1202,7 +1206,7 @@ TIM4_PSCR_RESET_VALUE	stm8s.h	938;"	macro
 TIM4_SR1_RESET_VALUE	stm8s.h	935;"	macro
 TIM4_SR1_UIF	stm8s.h	957;"	macro
 TIM4_TypeDef	stm8s.h	927;"	typedef	typeref:struct:TIM4_struct
-TIM4_UPD_Interrupt	main_ass.c	381;"	function	signature:(void)
+TIM4_UPD_Interrupt	main_ass.c	353;"	function	signature:(void)
 TIM4_UPD_Interrupt	stm8_interrupt_vector.c	21;"	prototype	file:	signature:(void)
 TIM4_struct	stm8s.h	913;"	struct
 TIM5	stm8s.h	2468;"	macro
@@ -1327,9 +1331,9 @@ U16_MAX	stm8s_type.h	90;"	macro
 U32_MAX	stm8s_type.h	93;"	macro
 U8_MAX	stm8s_type.h	87;"	macro
 UART1	stm8s.h	2442;"	macro
-UART1RxInterrupt	main_ass.c	498;"	function	signature:(void)
+UART1RxInterrupt	main_ass.c	473;"	function	signature:(void)
 UART1RxInterrupt	stm8_interrupt_vector.c	27;"	prototype	file:	signature:(void)
-UART1TxInterrupt	main_ass.c	469;"	function	signature:(void)
+UART1TxInterrupt	main_ass.c	444;"	function	signature:(void)
 UART1TxInterrupt	stm8_interrupt_vector.c	26;"	prototype	file:	signature:(void)
 UART1_BRR1_DIVM	stm8s.h	1689;"	macro
 UART1_BRR1_RESET_VALUE	stm8s.h	1662;"	macro
@@ -1526,13 +1530,15 @@ __STM8S_H	stm8s.h	24;"	macro
 __STM8S_TYPE_H	stm8s_type.h	24;"	macro
 __STRING__	c:\program files\cosmic\cxstm8_32k\hstm8\string.h	6;"	macro
 _stext	stm8_interrupt_vector.c	20;"	prototype	file:
-_vectab	stm8_interrupt_vector.c	29;"	variable
-adc2_init	main_ass.c	328;"	function	signature:(void)
+_vectab	stm8_interrupt_vector.c	30;"	variable
+adc2_init	main_ass.c	323;"	function	signature:(void)
+adc_buff	main_ass.c	57;"	variable
+adc_buff_	main_ass.c	57;"	variable
 adc_ch	main_ass.c	28;"	variable
 adc_cnt	main_ass.c	28;"	variable
 adc_plazma	main_ass.c	29;"	variable
 adc_plazma_short	main_ass.c	29;"	variable
-adr_drv_v3	main_ass.c	186;"	function	signature:(void)
+adr_drv_v3	main_ass.c	195;"	function	signature:(void)
 b100Hz	main_ass.c	15;"	variable
 b10Hz	main_ass.c	15;"	variable
 b1Hz	main_ass.c	15;"	variable
@@ -1545,29 +1551,34 @@ bool	stm8s_type.h	65;"	typedef	typeref:enum:__anon10
 buffer_for_timer1_H	main_ass.c	49;"	variable
 buffer_for_timer1_L	main_ass.c	50;"	variable
 cnt_net_drv	main_ass.c	44;"	variable
-delay_ms	main_ass.c	67;"	function	signature:(short in)
+delay_ms	main_ass.c	76;"	function	signature:(short in)
 disableInterrupts	stm8s.h	2491;"	macro
 disableInterrupts	stm8s.h	2500;"	macro
 eepera	c:\program files\cosmic\cxstm8_32k\hstm8\string.h	35;"	macro
 enableInterrupts	stm8s.h	2490;"	macro
 enableInterrupts	stm8s.h	2499;"	macro
-exti_init	main_ass.c	232;"	function	signature:(void)
+exti_init	main_ass.c	241;"	function	signature:(void)
+freqMultipler	main_ass.c	59;"	variable
 getchar	c:\program files\cosmic\cxstm8_32k\hstm8\stdio.h	15;"	prototype	signature:(void)
 gets	c:\program files\cosmic\cxstm8_32k\hstm8\stdio.h	16;"	prototype	signature:(char *s)
-gran	main_ass.c	53;"	function	signature:(signed short *adr, signed short min, signed short max)
+gran	main_ass.c	62;"	function	signature:(signed short *adr, signed short min, signed short max)
+h	main_ass.c	55;"	variable
 halt	stm8s.h	2497;"	macro
 halt	stm8s.h	2506;"	macro
 i_main_num_of_bps	main_ass.c	46;"	variable
 i_main_sigma	main_ass.c	47;"	variable
+inAdcResult	main_ass.c	53;"	variable
+inPulseCount	main_ass.c	52;"	variable
 interrupt_handler	stm8_interrupt_vector.c	9;"	member	struct:interrupt_vector	file:
 interrupt_handler_t	stm8_interrupt_vector.c	5;"	typedef	file:
 interrupt_instruction	stm8_interrupt_vector.c	8;"	member	struct:interrupt_vector	file:
 interrupt_vector	stm8_interrupt_vector.c	7;"	struct	file:
-led_drv	main_ass.c	114;"	function	signature:(void)
-main	main_ass.c	512;"	function
+l	main_ass.c	55;"	variable
+led_drv	main_ass.c	123;"	function	signature:(void)
+main	main_ass.c	499;"	function
 main_cnt	main_ass.c	36;"	variable
 main_cnt1	main_ass.c	36;"	variable
-matemat	main_ass.c	162;"	function	signature:(void)
+matemat	main_ass.c	171;"	function	signature:(void)
 memchr	c:\program files\cosmic\cxstm8_32k\hstm8\string.h	28;"	prototype	signature:(void *s, char c, unsigned int n)
 memcmp	c:\program files\cosmic\cxstm8_32k\hstm8\string.h	22;"	prototype	signature:(void *s1, void *s2, unsigned int n)
 memcpy	c:\program files\cosmic\cxstm8_32k\hstm8\string.h	29;"	prototype	signature:(void *s1, void *s2, unsigned int n)
@@ -1579,10 +1590,10 @@ off_bp_cnt	main_ass.c	35;"	variable
 plazma_int	main_ass.c	40;"	variable
 printf	c:\program files\cosmic\cxstm8_32k\hstm8\stdio.h	17;"	prototype	signature:(char *format, ...)
 putchar	c:\program files\cosmic\cxstm8_32k\hstm8\stdio.h	18;"	prototype	signature:(char c)
-putchar	main_ass.c	169;"	function	signature:(char c)
+putchar	main_ass.c	178;"	function	signature:(char c)
 puts	c:\program files\cosmic\cxstm8_32k\hstm8\stdio.h	19;"	prototype	signature:(char *s)
-pwr_drv	main_ass.c	124;"	function	signature:(void)
-pwr_hndl	main_ass.c	156;"	function	signature:(void)
+pwr_drv	main_ass.c	133;"	function	signature:(void)
+pwr_hndl	main_ass.c	165;"	function	signature:(void)
 rim	stm8s.h	2492;"	macro
 rim	stm8s.h	2501;"	macro
 rotor_int	main_ass.c	39;"	variable
@@ -1616,11 +1627,11 @@ t0_cnt1	main_ass.c	14;"	variable
 t0_cnt2	main_ass.c	14;"	variable
 t0_cnt3	main_ass.c	14;"	variable
 t0_cnt4	main_ass.c	14;"	variable
-t1_init	main_ass.c	241;"	function	signature:(void)
-t2_init	main_ass.c	304;"	function	signature:(void)
-t2_init_	main_ass.c	267;"	function	signature:(void)
-t3_init_	main_ass.c	287;"	function	signature:(void)
-t4_init	main_ass.c	103;"	function	signature:(void)
+t1_init	main_ass.c	250;"	function	signature:(void)
+t2_init	main_ass.c	313;"	function	signature:(void)
+t2_init_	main_ass.c	276;"	function	signature:(void)
+t3_init_	main_ass.c	296;"	function	signature:(void)
+t4_init	main_ass.c	112;"	function	signature:(void)
 trap	stm8s.h	2495;"	macro
 trap	stm8s.h	2504;"	macro
 tx_buffer1	main_ass.c	20;"	variable
@@ -1632,7 +1643,7 @@ tx_wr_index1	main_ass.c	22;"	variable
 u16	stm8s_type.h	45;"	typedef
 u32	stm8s_type.h	44;"	typedef
 u8	stm8s_type.h	46;"	typedef
-uart1_init	main_ass.c	81;"	function	signature:(void)
+uart1_init	main_ass.c	90;"	function	signature:(void)
 uc16	stm8s_type.h	49;"	typedef
 uc32	stm8s_type.h	48;"	typedef
 uc8	stm8s_type.h	50;"	typedef
