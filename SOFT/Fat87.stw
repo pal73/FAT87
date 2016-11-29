@@ -10,6 +10,10 @@ Dependencies=
 [Project1]
 Filename=fat87_ass.stp
 Dependencies=
+
+[Project2]
+Filename=..\..\fat35\soft\fat35o\fat35o.stp
+Dependencies=
 [Options]
 ActiveProject=fat87_ass
 ActiveConfig=Debug
